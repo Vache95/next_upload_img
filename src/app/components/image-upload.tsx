@@ -1,25 +1,27 @@
 'use client'
 
-import { UploadButton } from '@/utils/uploadthing'
+import { UploadButton, UploadDropzone } from '@/utils/uploadthing'
+import Image from 'next/image'
 import React, { useState } from 'react'
 
 const ImageUpload = () => {
   const [imageUrl,setImageUrl] = useState<string>('')
   return (
     <div>
-      <UploadButton
+      <UploadDropzone
        endpoint='imageUploader'
        onClientUploadComplete={(res) => {
-        // Do something with the response
-        console.log("Files: ", res);
-        alert("Upload Completed");
+        setImageUrl(res[0].url)
+
       }}
       onUploadError={(error: Error) => {
         // Do something with the error.
         alert(`ERROR! ${error.message}`);
       }}
        />
-       {imageUrl.length ? <div></div> : null}
+       {imageUrl.length ? <div>
+        <Image src={imageUrl} alt="my image" width={400} height={300}/>
+       </div> : null}
     </div>
   )
 }
